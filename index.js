@@ -8,22 +8,22 @@ const app = express();
 
 app.use(express.json());
 
-app.delete('/clientes/:id', (request, response) => {
+app.delete('/clientes/:id', async (request, response) => {
     const id = parseInt(request.params.id);
-    db.deleteCustomer(id);
+    await db.deleteCustomer(id);
     response.sendStatus(204);
 });
 
-app.patch('/clientes/:id', (request, response) => {
+app.patch('/clientes/:id', async (request, response) => {
     const id = parseInt(request.params.id);
     const customer = request.body;
-    db.updateCustomer(id, customer);
+    await db.updateCustomer(id, customer);
     response.sendStatus(200);
 });
 
-app.post('/clientes', (request, response) => {
+app.post('/clientes', async (request, response) => {
     const customer = request.body;
-    db.insertCustomer(customer);
+    await db.insertCustomer(customer);
     response.sendStatus(201);
 });
 
@@ -39,9 +39,9 @@ app.get('/clientes', async (request, response) => {
 });
 
 app.get('/', (request, response, next) => {
-    response.json({message: 'It`s alive!'})
+    response.send('It`s alive!')  //json({message: 'It`s alive!'})
 });
 
 app.listen(process.env.PORT, () => {
-    console.log('App is running!')
+    console.log(`App is running on port ${process.env.PORT}`)
 });
